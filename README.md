@@ -1,6 +1,6 @@
 # GitHub Private Repo Cleanup
 
-This utility helps back up your private GitHub repositories locally before deleting them off of your GitHub account - useful for migrating off of student accounts to avoid being billed.
+This utility helps back up your private GitHub repositories locally before deleting them off of your GitHub account - useful for migrating off of student accounts to avoid being billed. You can also use this script to make your private repos public (omitting whichever repositories you want). 
 
 In order to use this script, you must first create a [GitHub Access Token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/) and [assign it to the environment variable](https://askubuntu.com/questions/58814/how-do-i-add-environment-variables)  $GITHUB_ACCESS_TOKEN in your terminal. 
 
