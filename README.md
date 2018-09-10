@@ -9,6 +9,9 @@ Usage:
     python cleanup.py <github username>
 
 Optional flags:
+
     --no-delete: this flag will specify not to delete any repos. Use this if you would only like to clone all your repos.
+    
     --no-clone: use this flag with caution! If you use it, your repositories will NOT be cloned before deletion.
+    
     --skip <repo1> <repo2> <repo3> ... : use this to skip over certain repositories for cloning/deletion.
