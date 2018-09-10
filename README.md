@@ -14,9 +14,12 @@ Optional flags:
     
     --no-clone: use this flag with caution! If you use it, your repositories will NOT be cloned before deletion.
     
-    --skip <repo1> <repo2> <repo3> ... : use this to skip over certain repositories for cloning/deletion.
+    --skip <repo1> <repo2> <repo3> ... : use this to skip over certain repositories for cloning/deletion. 
+    
+    --make-public  use this flag to just make your private repos public. PLEASE BE SURE THIS DATA CAN GO PUBLIC.
 
 You'll need to install gitpython for this to work: 
 
     pip install gitpython
     
+DISCLAIMER: I AM NOT RESPONSIBLE FOR ANY DATA YOU HAPPEN TO ERRONEOUSLY DELETE OR MAKE PUBLIC. USE THIS TOOL CAREFULLY. 
