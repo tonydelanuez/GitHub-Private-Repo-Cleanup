@@ -10,6 +10,8 @@ parser.add_argument('user', help="username for GitHub account")
 parser.add_argument('--skip', nargs='+')
 parser.add_argument('--no-delete', help="use this flag to specify no deletion of repos", action="store_true")
 parser.add_argument('--no-clone', help="use this flag to specify no cloning of repos", action="store_true")
+parser.add_argument('--make-public', help="use this flag to just make your private repos public. PLEASE BE SURE THIS DATA CAN GO PUBLIC.", action="store_true")
+
 GITHUB_API_BASE_URL = 'https://api.github.com'
 args = parser.parse_args()
 GITHUB_ACCESS_TOKEN = os.environ.get('GITHUB_ACCESS_TOKEN')
@@ -21,6 +23,7 @@ GITHUB_USER = args.user
 # flags for clone/delete
 clone_flag = not args.no_clone
 delete_flag = not args.no_delete
+make_public = args.make_public
 skipped_repos = args.skip or []
 
 def main():
@@ -31,7 +34,11 @@ def main():
     if not repos:
         print("No repos to delete or clone.")
     else:
-        clone_and_or_delete(repos, session)
+        # Assume that if they just want to make public, don't delete or clone.
+        if make_public:
+            change_to_public(repos, session)
+        else:
+            clone_and_or_delete(repos, session)
         print("Done.")
 
 # from user vincenta on this gist: https://gist.github.com/garrettdreyfus/8153571
@@ -112,6 +119,32 @@ def delete_repository(repo_owner, repo_name, session):
     else:
         print("Could not delete repository %s!" % repo_name)
     return delete_response.ok
+
+# make a repo public with a patch request
+def make_public(repo_owner, repo_name, session):
+    print("Making %s public..." % repo_name)
+    public_url = "%s/repos/%s/%s" % (GITHUB_API_BASE_URL, repo_owner, repo_name)
+    data = {"name": repo_name, "private": "false"}
+    patch_response = session.patch(public_url, json=data)
+    if patch_response.ok:
+        print("Repository %s successfully made public." % repo_name)
+    else:
+        print("Could not make %s public" % repo_name)
+    return patch_response.ok
+
+def change_to_public(repos, session):
+    want_public = confirm("Are you sure you want to make these repos public?")
+    repos_public = []
+    if not want_public:
+        print("Okay, exiting.")
+        sys.exit(1)
+    else:
+        print("Making your private repos public")
+        for repo in repos:
+            public_success = make_public(GITHUB_USER, repo, session)
+            if public_success:
+                repos_public.append(repo)
+    print("%d repos made public: " % (len(repos_public)), repos_public)
 
 # perform all repo clones or deletion, needs the GitHub session for auth.
 def clone_and_or_delete(repos, session):
