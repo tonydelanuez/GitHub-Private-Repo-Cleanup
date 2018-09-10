@@ -53,7 +53,7 @@ def set_git_environment():
 def create_github_session():
     session = requests.Session()
     session.auth = (GITHUB_USER, GITHUB_ACCESS_TOKEN)
-    login_response = session.get('https://api.github.com/user')
+    login_response = session.get(GITHUB_API_BASE_URL+'/user')
     if login_response.ok:
         print("Connected to GitHub successfully as user %s." % GITHUB_USER)
     else:
